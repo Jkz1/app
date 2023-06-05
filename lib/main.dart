@@ -1,6 +1,7 @@
+import 'package:app/prov.dart';
 import 'package:app/test.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'home.dart';
 
 void main() {
@@ -11,13 +12,18 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Prov())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.grey,
+        ),
+        home: const Home(),
       ),
-      home: const Home(),
     );
   }
 }
