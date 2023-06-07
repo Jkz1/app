@@ -7,12 +7,14 @@ class GlassMorphism extends StatelessWidget {
   final double opacity;
   final double borderOpacity;
   final Widget child;
+  final int duration;
 
   GlassMorphism({
     super.key,
     required this.blur,
     required this.opacity,
-    required this.borderOpacity,
+    this.borderOpacity = 0.5,
+    this.duration = 500,
     required this.child,
   });
 
@@ -22,18 +24,20 @@ class GlassMorphism extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: Container(
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 500),
           decoration: BoxDecoration(
               color: Colors.white.withOpacity(opacity),
               borderRadius: BorderRadius.all(Radius.circular(20)),
               border:
-                  Border.all(width: 1.5, color: Colors.white.withOpacity(0.5))),
+                  Border.all(width: 1, color: Colors.white.withOpacity(borderOpacity))),
           child: child,
         ),
       ),
     );
   }
 }
+
 
 class RoundedContainer extends StatelessWidget {
   EdgeInsets? margin;
