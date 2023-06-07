@@ -205,6 +205,7 @@ class Action extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final prov = Provider.of<Prov>(context);
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -262,20 +263,7 @@ class Action extends StatelessWidget {
           Expanded(
               flex: 5,
               child: Column(
-                children: [
-                  TaskBubble(
-                    text: "Do PAM Homework",
-                    value: 0,
-                  ),
-                  TaskBubble(
-                    text: "Workout for 15 minutes",
-                    value: 1,
-                  ),
-                  TaskBubble(
-                    text: "Sleep 8 hours",
-                    value: 2,
-                  ),
-                ],
+                children: List.generate(3, (index) => TaskBubble(text: prov.task[index][0], value: index))
               )),
         ],
       ),
@@ -288,6 +276,10 @@ class Description extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final prov = Provider.of<Prov>(context);
+
+    
+
     return Expanded(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -301,16 +293,20 @@ class Description extends StatelessWidget {
                 children: [
                   Padding(
                       padding: EdgeInsets.only(bottom: 13),
-                      child: Text("Do PAM Homework",
+                      child: Text(prov.task[prov.taskStatus][0],
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.white.withOpacity(0.5)))),
-                  RoundedContainer(
-                    color: Colors.white.withOpacity(0.2),
-                    radius: 6,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.all(Radius.circular(6))
+                    ),
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      "This is desc of 'Do PAM Homework'. Dasarnya hanya mengerjakan dengan sungguh sungguh",
+                      prov.task[prov.taskStatus][1],
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: Colors.white.withOpacity(0.8)),
                       textAlign: TextAlign.center,
                     ),
@@ -370,17 +366,19 @@ class _TaskBubbleState extends State<TaskBubble> {
               // Colors.white.withOpacity(prov.taskStatus == widget.value?0.3:0.1)
               ),
           child: Center(
-              child: Text(widget.text,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+              child: AnimatedDefaultTextStyle(
+                child: Text(widget.text),
+                duration: Duration(milliseconds: 150),
+                style: TextStyle(
                       fontSize: _state ? 17.5 : 18,
                       color: Colors.white.withOpacity(_state
                           ? 0.7
                           : prov.taskStatus == widget.value
                               ? 0.9
                               : 0.5)
-                      // Colors.white.withOpacity(prov.taskStatus == widget.value?0.8:0.5)
-                      ))),
+                    ),
+              )
+              ),
         ),
       ),
     );
